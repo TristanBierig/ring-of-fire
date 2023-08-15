@@ -1,4 +1,4 @@
-<app-player *ngFor="let player of game.players; let i = index" [ngStyle]="{'top.px': 100 + (i * 140)}" [name]="player"
+<app-player *ngFor="let player of game.players; let i = index" [ngStyle]="{'top.px': 100 + (i * 90)}" [name]="player" [playerActive]="i == this.game.currentPlayer"
     class="player-position"></app-player>
 
 <div class="field">
@@ -12,6 +12,7 @@
     </div>
 </div>
 
+<app-game-info [card]="currentCard" class="pin-bottom"></app-game-info>
 
 <button (click)="openDialog()" mat-fab color="primary" class="btn-add">
     <mat-icon>add</mat-icon>
