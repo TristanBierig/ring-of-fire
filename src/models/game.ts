@@ -12,7 +12,16 @@ export class Game {
             this.stack.push('diamonds_' + i);
         }
 
-        shuffle(this.stack);
+        shuffle(this.stack);    
+    }
+
+    public toJson(){
+        return {
+            players: this.players,
+            stack: this.stack,
+            playedCards: this.playedCards,
+            currentPlayer: this.currentPlayer
+        }
     }
 }
 
