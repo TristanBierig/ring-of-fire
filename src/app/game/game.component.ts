@@ -31,8 +31,8 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.newGame();
     this.route.params.subscribe((params) => {
-      this.games$.subscribe((newGame) => {
-        const id = params['id'];
+      const url = this.games$ + params['id'];
+      url.subscribe((newGame: any) => {
         this.currentGame = newGame.id;
         console.log(params['id']);
         console.log(this.currentGame);
