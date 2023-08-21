@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Game } from 'src/models/game';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { Observable } from 'rxjs';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, getDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -14,12 +14,13 @@ import { ActivatedRoute } from '@angular/router';
 export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string = '';
-  game!: Game;
+  
+  @Input() public game!: Game;
   itemCollection: any;
 
   games$: Observable<any>;
   games: Array<string> = [];
-  currentGame: any;
+  public currentGame: any;
   private firestore: Firestore = inject(Firestore);
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) {
@@ -30,20 +31,29 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.newGame();
-    this.route.params.subscribe((params) => {
-      const url = this.games$ + params['id'];
-      url.subscribe((newGame: any) => {
-        this.currentGame = newGame.id;
-        console.log(params['id']);
-        console.log(this.currentGame);
-      });
+    this.route.params.subscribe(async (params) => {
+      const docRef = doc(this.firestore, "games", params['id']);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        this.currentGame = docSnap.data();
+        this.currentGame.subscribe((game: any) => {
+          this.game.currentPlayer = game.currentPlayer;
+          this.game.playedCards = game.playedCards;
+          this.game.players = game.players;
+          this.game.stack = game.stack;
+        })
+        console.log("Document data:", docSnap.data());
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
     });
   }
 
 
   newGame() {
     this.game = new Game();
-    // setDoc(doc(this.itemCollection), this.game.toJson());
   }
 
 
