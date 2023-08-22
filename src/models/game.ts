@@ -12,10 +12,10 @@ export class Game {
             this.stack.push('diamonds_' + i);
         }
 
-        shuffle(this.stack);    
+        shuffle(this.stack);
     }
 
-    public toJson(){
+    public toJson() {
         return {
             players: this.players,
             stack: this.stack,
@@ -23,6 +23,7 @@ export class Game {
             currentPlayer: this.currentPlayer
         }
     }
+
 }
 
 
