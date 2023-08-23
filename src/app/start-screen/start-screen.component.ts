@@ -22,8 +22,6 @@ export class StartScreenComponent implements OnInit {
     this.game = new Game();
     addDoc(this.collectionInstance, this.game.toJson()).then((docRef) => {
       // Needs to be called docRef and points to the just created document
-      console.log(docRef.id);
-      console.log('Game created');
       this.router.navigateByUrl('/game/' + docRef.id);
     }).catch((err) => {
       console.log(err);
