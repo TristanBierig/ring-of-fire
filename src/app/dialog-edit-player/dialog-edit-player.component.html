@@ -5,10 +5,9 @@
   <mat-form-field>
     <mat-label>Name</mat-label>
     <input matInput [(ngModel)]="outputData.name">
-
-    <mat-label>Select an option</mat-label>
   </mat-form-field>
 
+  <p>Choose your Avatar.</p>
   <div class="avatar-wrapper">
     <img *ngFor="let avatar of avatars; let i = index" (click)="selectAvatar(i)"
       [class.avatar-active]="i === focusAvatarIndex" src="{{ avatar }}" alt="">
@@ -17,5 +16,7 @@
   <div class="dialog-actions" mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Close</button>
     <button mat-button [disabled]="playerName.length == 0" [mat-dialog-close]="outputData">Ok</button>
-    <button mat-button (click)="deletePlayer()"color="warn">Delete player</button>
+    <button mat-button (click)="deletePlayer()" color="warn">Delete player</button>
   </div>
+
+</div>

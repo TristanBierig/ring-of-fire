@@ -1,7 +1,16 @@
-<app-player (click)="openDialogEditPlayer(i)" *ngFor="let player of game?.players; let i = index" [ngStyle]="{'top.px': 50 + (i * 90)}" [name]="player" [avatar]="this.game.avatars[i]" [playerActive]="i == this.game.currentPlayer"
-    class="player-position"></app-player>
+<app-player (click)="openDialogEditPlayer(i)" *ngFor="let player of game?.players; let i = index"
+    [ngStyle]="{'top.px': 50 + (i * 90)}" [name]="player" [avatar]="this.game.avatars[i]"
+    [playerActive]="i == this.game.currentPlayer" class="player-position">
+</app-player>
 
-<div class="field">
+
+<div class="game-over-screen" *ngIf="isGameOver">
+    <img src="assets/img/game_over.svg" alt="">
+    <button (click)="restartGame()" mat-raised-button>Start new Game</button>
+</div>
+
+
+<div *ngIf="!isGameOver" class="field">
     <div class="card-stack">
         <img [ngStyle]="{'right.px': i * 5}" *ngFor="let c of [0,1,2,3]; let i = index;"
             src="assets/img/cards/card_cover.png" alt="">
@@ -12,7 +21,9 @@
     </div>
 </div>
 
+
 <app-game-info [card]="game.currentCard" *ngIf="game?.currentCard" class="pin-bottom"></app-game-info>
+
 
 <button (click)="openDialogAddPlayer()" mat-fab color="primary" class="btn-add">
     <mat-icon>add</mat-icon>

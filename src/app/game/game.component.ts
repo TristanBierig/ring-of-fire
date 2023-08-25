@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject, numberAttribute } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Game } from 'src/models/game';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
@@ -6,6 +6,7 @@ import { Firestore, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/fir
 import { ActivatedRoute } from '@angular/router';
 import { __values } from 'tslib';
 import { DialogEditPlayerComponent } from '../dialog-edit-player/dialog-edit-player.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -14,14 +15,14 @@ import { DialogEditPlayerComponent } from '../dialog-edit-player/dialog-edit-pla
 })
 export class GameComponent implements OnInit {
   game!: Game;
-  itemCollection: any;
+  isGameOver: boolean = false;
 
   public playerAvatar!: string;
   public currentGameId!: string;
   public currentGame!: any;
   private firestore: Firestore = inject(Firestore);
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(private router: Router, private route: ActivatedRoute, public dialog: MatDialog) {
 
   }
 
@@ -66,7 +67,13 @@ export class GameComponent implements OnInit {
 
 
   async takeCard() {
-    if (!this.game.pickCardAnimation) {
+    if (this.game.players.length <= 0) {
+      return;
+    }
+    if (this.game.stack.length == 0) {
+      this.isGameOver = true;
+      this.updateGame();
+    } else if (!this.game.pickCardAnimation) {
       this.game.currentCard = this.game.stack.pop() as string;
       this.game.pickCardAnimation = true;
       this.game.currentPlayer++;
@@ -86,9 +93,10 @@ export class GameComponent implements OnInit {
   async openDialogAddPlayer(): Promise<void> {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
-    dialogRef.afterClosed().subscribe(async (name: string) => {
-      if (name && name.length > 0) {
-        this.game.players.push(name);
+    dialogRef.afterClosed().subscribe(async (data: any) => {
+      if (data) {
+        this.game.players.push(data.name);
+        this.game.avatars.push(data.avatar);
         await this.updateGame();
       }
     });
@@ -107,17 +115,19 @@ export class GameComponent implements OnInit {
       if (!isNaN(data)) {
         this.game.players.splice(data, 1);
         this.game.avatars.splice(data, 1);
-        console.log('Player index: ' + data + ' deleted success');
         await this.updateGame();
       } else if (data) {
-        console.log('Data aus dem Edit-Dialog:' + data);
+        console.log(data);
         this.game.players[i] = data.name;
         this.game.avatars[i] = data.avatar;
-        console.log('Game direkt vorm upload:' + this.game);
-
         await this.updateGame();
       }
     });
+  }
+
+
+  restartGame() {
+    this.router.navigateByUrl('');
   }
 
 }

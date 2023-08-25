@@ -4,12 +4,18 @@
   <p>Please enter the name of a player.</p>
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="name">
+    <input matInput [(ngModel)]="outputData.name">
   </mat-form-field>
-</div>
 
+
+  <p>Choose your Avatar.</p>
+  <div class="avatar-wrapper">
+    <img *ngFor="let avatar of avatars; let i = index" (click)="selectAvatar(i)"
+      [class.avatar-active]="i === focusAvatarIndex" src="{{ avatar }}" alt="">
+  </div>
+
+</div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Close</button>
-  <button mat-button [disabled]="name.length == 0" [mat-dialog-close]="name" cdkFocusInitial>Ok</button>
+  <button mat-button [disabled]="outputData.name.length == 0" [mat-dialog-close]="outputData" cdkFocusInitial>Ok</button>
 </div>
-

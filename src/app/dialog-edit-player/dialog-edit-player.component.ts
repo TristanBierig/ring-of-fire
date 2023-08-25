@@ -24,7 +24,7 @@ export class DialogEditPlayerComponent {
 
   outputData = {
     name: this.playerName,
-    avatar: this.avatars[this.selectedPlayerIndex]
+    avatar: ''
   };
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { playerName: any, playerIndex: number }, public dialogRef: MatDialogRef<DialogAddPlayerComponent>) { }

@@ -7,8 +7,23 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./dialog-add-player.component.scss']
 })
 export class DialogAddPlayerComponent {
-  name: string = '';
+  selectedAvatar: string = 'assets/img/profile/1.webp';
+  focusAvatarIndex!: number;
+  
 
+  outputData = {
+    name: '',
+    avatar: ''
+  };
+
+  avatars: string[] = [
+    'assets/img/profile/1.webp',
+    'assets/img/profile/2.png',
+    'assets/img/profile/monkey.png',
+    'assets/img/profile/pinguin.svg',
+    'assets/img/profile/serious-woman.svg',
+    'assets/img/profile/winkboy.svg'
+  ];
 
   constructor(public dialogRef: MatDialogRef<DialogAddPlayerComponent>) { }
 
@@ -17,5 +32,10 @@ export class DialogAddPlayerComponent {
     this.dialogRef.close();
   }
 
+
+  selectAvatar(i: number) {
+    this.outputData.avatar = this.avatars[i];
+    this.focusAvatarIndex = i;
+  }
 
 }
