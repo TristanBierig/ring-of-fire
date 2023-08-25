@@ -9,14 +9,9 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 })
 export class DialogEditPlayerComponent {
   playerName: string = this.data.playerName;
-  selectedAvatar: string = '';
-
-  outputData = {
-    name: this.playerName,
-    avatar: this.selectedAvatar
-  };
-  
-  
+  selectedAvatar: string = 'assets/img/profile/1.webp';
+  focusAvatarIndex!: number;
+  selectedPlayerIndex: number = this.data.playerIndex;
 
   avatars: string[] = [
     'assets/img/profile/1.webp',
@@ -27,8 +22,12 @@ export class DialogEditPlayerComponent {
     'assets/img/profile/winkboy.svg'
   ];
 
+  outputData = {
+    name: this.playerName,
+    avatar: this.avatars[this.selectedPlayerIndex]
+  };
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { playerName: any }, public dialogRef: MatDialogRef<DialogAddPlayerComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { playerName: any, playerIndex: number }, public dialogRef: MatDialogRef<DialogAddPlayerComponent>) { }
 
 
   onNoClick() {
@@ -38,7 +37,13 @@ export class DialogEditPlayerComponent {
 
   selectAvatar(i: number) {
     this.outputData.avatar = this.avatars[i];
+    this.focusAvatarIndex = i;
   }
 
+
+  deletePlayer() {
+    this.dialogRef.close(this.selectedPlayerIndex);
+  }
+  
 
 }

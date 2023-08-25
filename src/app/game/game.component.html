@@ -1,4 +1,4 @@
-<app-player (click)="openDialogEditPlayer(i)" *ngFor="let player of game?.players; let i = index" [ngStyle]="{'top.px': 100 + (i * 90)}" [name]="player" [avatar]="this.game.avatars[i]" [playerActive]="i == this.game.currentPlayer"
+<app-player (click)="openDialogEditPlayer(i)" *ngFor="let player of game?.players; let i = index" [ngStyle]="{'top.px': 50 + (i * 90)}" [name]="player" [avatar]="this.game.avatars[i]" [playerActive]="i == this.game.currentPlayer"
     class="player-position"></app-player>
 
 <div class="field">

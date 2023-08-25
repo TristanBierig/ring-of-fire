@@ -5,5 +5,19 @@
     img {
         height: 60px;
         width: 60px;
+        cursor: pointer;
+        filter: brightness(0.6);
+
+        &:hover {
+            filter: brightness(1.1);
+        }
     }
+}
+
+.avatar-active {
+    filter: brightness(1.1) !important;
+}
+
+.dialog-actions button:last-child {
+    margin-left: auto;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject, numberAttribute } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Game } from 'src/models/game';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
@@ -99,14 +99,22 @@ export class GameComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogEditPlayerComponent, {
       data: {
         playerName: this.game.players[i],
+        playerIndex: i
       }
     });
 
     dialogRef.afterClosed().subscribe(async (data: any) => {
-      if (data) {
-        console.log(data);
+      if (!isNaN(data)) {
+        this.game.players.splice(data, 1);
+        this.game.avatars.splice(data, 1);
+        console.log('Player index: ' + data + ' deleted success');
+        await this.updateGame();
+      } else if (data) {
+        console.log('Data aus dem Edit-Dialog:' + data);
         this.game.players[i] = data.name;
         this.game.avatars[i] = data.avatar;
+        console.log('Game direkt vorm upload:' + this.game);
+
         await this.updateGame();
       }
     });
