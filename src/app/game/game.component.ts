@@ -5,6 +5,7 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 import { Firestore, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { __values } from 'tslib';
+import { DialogEditPlayerComponent } from '../dialog-edit-player/dialog-edit-player.component';
 
 @Component({
   selector: 'app-game',
@@ -15,12 +16,13 @@ export class GameComponent implements OnInit {
   game!: Game;
   itemCollection: any;
 
+  public playerAvatar!: string;
   public currentGameId!: string;
   public currentGame!: any;
   private firestore: Firestore = inject(Firestore);
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) {
-   
+
   }
 
 
@@ -56,7 +58,8 @@ export class GameComponent implements OnInit {
     await updateDoc(docRef, updateData)
       .then(() => {
         console.log('Updated Game Data send succesfully');
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -80,12 +83,30 @@ export class GameComponent implements OnInit {
   }
 
 
-  async openDialog(): Promise<void> {
+  async openDialogAddPlayer(): Promise<void> {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
     dialogRef.afterClosed().subscribe(async (name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        await this.updateGame();
+      }
+    });
+  }
+
+
+  async openDialogEditPlayer(i: number): Promise<void> {
+    const dialogRef = this.dialog.open(DialogEditPlayerComponent, {
+      data: {
+        playerName: this.game.players[i],
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(async (data: any) => {
+      if (data) {
+        console.log(data);
+        this.game.players[i] = data.name;
+        this.game.avatars[i] = data.avatar;
         await this.updateGame();
       }
     });

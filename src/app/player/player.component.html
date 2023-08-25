@@ -1,4 +1,5 @@
 <div class="player" [class.player-active]="playerActive">
-    <img src="assets/img/profile/1.webp" alt="">
+    <img *ngIf="avatar; else elseBlock" src="{{ avatar }}" alt="">
+    <ng-template #elseBlock><img src="{{ defaultAvatar }}" alt=""></ng-template>
     <span>{{ name }}</span>
 </div>

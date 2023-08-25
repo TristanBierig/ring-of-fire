@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Edit player</h1>
+
+<div mat-dialog-content>
+  <p>Change the name of the player.</p>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="outputData.name">
+
+    <mat-label>Select an option</mat-label>
+  </mat-form-field>
+
+  <div class="avatar-wrapper">
+    <img *ngFor="let avatar of avatars; let i = index" (click)="selectAvatar(i)" src="{{ avatar }}" alt="">
+  </div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+  <button mat-button [disabled]="playerName.length == 0" [mat-dialog-close]="outputData" cdkFocusInitial>Ok</button>
+</div>
